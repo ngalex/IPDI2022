@@ -1,3 +1,4 @@
+from cProfile import label
 import tkinter as tk
 import tkinter.font as tkFont
 import gallery.images as imgsources
@@ -11,6 +12,31 @@ imageB = imgsources.sources[3]
 
 selectedImageA = Image.open(imageA)
 selectedImageB = Image.open(imageB)
+
+def displayImgA(img):
+    labelClam =tk.Label(root, text="Clampeada")
+    labelClam.place(x=0, y= 260, anchor="nw")
+
+    photoC = ImageTk.PhotoImage(Image.fromarray((img*255).astype(np.uint8)))
+
+    labelC = tk.Label(root, image=photoC)
+    labelC.image = photoC
+    labelC.place(x = 0,
+                y = 280,
+                anchor ="nw")
+    return 
+
+def displayImgB(img):
+    labelProm =tk.Label(root, text="Promediada")
+    labelProm.place(x=300, y= 260, anchor="nw")
+
+    photoC = ImageTk.PhotoImage(Image.fromarray((img*255).astype(np.uint8)))
+
+    labelC = tk.Label(root, image=photoC)
+    labelC.image = photoC
+    labelC.place(x = 300,
+                y = 280,
+                anchor ="nw")
 
 class App:
     def __init__(self, root):
@@ -131,42 +157,31 @@ class App:
 
         labelC = tk.Label(root, image=None)
         labelC.image = None
-        labelC.place(x = 150,
+        labelC.place(x = 0,
                  y = 280,
                  anchor ="nw")
         # label.pack()
+
 
     def btnCuasiSumaRGBClick(self):
         imA = imglib.getNormRGB(imageA)
         imB = imglib.getNormRGB(imageB)
         imC = imA + imB[:,:,0:3]
         imC = np.clip(imC,0.,1.)
-        imglib.plot(imC)
+        displayImgA(imC)
+        # imglib.plot(imC)
         imD = (imA + imB[:,:,0:3])/2
-        imglib.plot(imD)
-
-        photoC = ImageTk.PhotoImage(imageio.imopen(imC))
-        labelC = tk.Label(root, image=photoC)
-        labelC.image = photoC
-        labelC.place(x = 150,
-                 y = 280,
-                 anchor ="nw")
+        displayImgB(imD)
 
     def btnCuasiRestaRGBClick(self):
         imA = imglib.getNormRGB(imageA)
         imB = imglib.getNormRGB(imageB)
         imC = imA - imB[:,:,0:3]
         imC = np.clip(imC,0.,1.)
-        imglib.plot(imC)
-        imD = (imC)/2
-        imglib.plot(imD)
+        displayImgA(imC)
 
-        photoC = ImageTk.PhotoImage(imageio.imopen(imC))
-        labelC = tk.Label(root, image=photoC)
-        labelC.image = photoC
-        labelC.place(x = 150,
-                 y = 280,
-                 anchor ="nw")
+        imD = (imC)/2
+        displayImgB(imD)
 
     def btnCuasiSumaYIQClick(self):
         imA = imglib.convertToYIQ(imglib.getNormRGB(imageA))
@@ -176,13 +191,13 @@ class App:
         imC = imglib.luminancia(1, imC)
         imC[:,:,1] = (imA[:,:,0]*imA[:,:,1]+imB[:,:,0]*imB[:,:,1])/(imA[:,:,0]+imB[:,:,1])
         imC[:,:,2] = (imA[:,:,0]*imA[:,:,2]+imB[:,:,0]*imB[:,:,2])/(imA[:,:,0]+imB[:,:,1])
-        imglib.plot(imglib.convertToRGB(imC))
+        displayImgA(imglib.convertToRGB(imC))
 
         imC = np.copy(imA)
         imC[:,:,0] = (imA[:,:,0] + imB[:,:,0])/2
         imC[:,:,1] = (imA[:,:,0]*imA[:,:,1]+imB[:,:,0]*imB[:,:,1])/(imA[:,:,0]+imB[:,:,1])
         imC[:,:,2] = (imA[:,:,0]*imA[:,:,2]+imB[:,:,0]*imB[:,:,2])/(imA[:,:,0]+imB[:,:,1])
-        imglib.plot(imglib.convertToRGB(imC))
+        displayImgB(imglib.convertToRGB(imC))
 
     def btnCuasiRestaYIQClick(self):
         imA = imglib.convertToYIQ(imglib.getNormRGB(imageA))
@@ -192,14 +207,16 @@ class App:
         imC = imglib.luminancia(1, imC)
         imC[:,:,1] = (imA[:,:,0]*imA[:,:,1]+imB[:,:,0]*imB[:,:,1])/(imA[:,:,0]+imB[:,:,1])
         imC[:,:,2] = (imA[:,:,0]*imA[:,:,2]+imB[:,:,0]*imB[:,:,2])/(imA[:,:,0]+imB[:,:,1])
-        imglib.plot(imglib.convertToRGB(imC))
+        displayImgA(imglib.convertToRGB(imC))
+
 
         imC = np.copy(imA)
         imC[:,:,0] = (imA[:,:,0] - imB[:,:,0])/2
         imC = imglib.luminancia(1, imC)
         imC[:,:,1] = (imA[:,:,0]*imA[:,:,1]+imB[:,:,0]*imB[:,:,1])/(imA[:,:,0]+imB[:,:,1])
         imC[:,:,2] = (imA[:,:,0]*imA[:,:,2]+imB[:,:,0]*imB[:,:,2])/(imA[:,:,0]+imB[:,:,1])
-        imglib.plot(imglib.convertToRGB(imC))
+        displayImgB(imglib.convertToRGB(imC))
+
 
     def btnProdYIQClick(self):
         imA = imglib.convertToYIQ(imglib.getNormRGB(imageA))
@@ -268,6 +285,8 @@ class App:
                     imC[i,j,1] = imB[i,j,1]
                     imC[i,j,2] = imB[i,j,2]
         imglib.plot(imglib.convertToRGB(imC))
+
+
 
 if __name__ == "__main__":
     root = tk.Tk()

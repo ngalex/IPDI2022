@@ -85,6 +85,16 @@ class App:
         GButton_265.place(x=660,y=220,width=115,height=34)
         GButton_265["command"] = self.btnDivYIQClick
 
+        GButton_265=tk.Button(root)
+        GButton_265["bg"] = "#f0f0f0"
+        ft = tkFont.Font(family='Times',size=10)
+        GButton_265["font"] = ft
+        GButton_265["fg"] = "#000000"
+        GButton_265["justify"] = "center"
+        GButton_265["text"] = "Cuasi Resta Abs YIQ"
+        GButton_265.place(x=660,y=260,width=115,height=34)
+        GButton_265["command"] = self.btnCuasiRestaAbsYIQClick
+
         photoA = ImageTk.PhotoImage(selectedImageA)
         photoB = ImageTk.PhotoImage(selectedImageB)
         
@@ -194,6 +204,15 @@ class App:
         imC = np.copy(imA)
         imC[:,:,0] /= imB[:,:,0]
         imC = imglib.luminancia(1, imC)
+        imC[:,:,1] = (imA[:,:,0]*imA[:,:,1]+imB[:,:,0]*imB[:,:,1])/(imA[:,:,0]+imB[:,:,1])
+        imC[:,:,2] = (imA[:,:,0]*imA[:,:,2]+imB[:,:,0]*imB[:,:,2])/(imA[:,:,0]+imB[:,:,1])
+        imglib.plot(imglib.convertToRGB(imC))
+
+    def btnCuasiRestaAbsYIQClick(self):
+        imA = imglib.convertToYIQ(imglib.getNormRGB(imageA))
+        imB = imglib.convertToYIQ(imglib.getNormRGB(imageB))
+        imC = np.copy(imA)
+        imC[:,:,0] = np.abs(imA[:,:,0] - imB[:,:,0])
         imC[:,:,1] = (imA[:,:,0]*imA[:,:,1]+imB[:,:,0]*imB[:,:,1])/(imA[:,:,0]+imB[:,:,1])
         imC[:,:,2] = (imA[:,:,0]*imA[:,:,2]+imB[:,:,0]*imB[:,:,2])/(imA[:,:,0]+imB[:,:,1])
         imglib.plot(imglib.convertToRGB(imC))

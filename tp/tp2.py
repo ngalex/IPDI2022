@@ -95,6 +95,26 @@ class App:
         GButton_265.place(x=660,y=260,width=115,height=34)
         GButton_265["command"] = self.btnCuasiRestaAbsYIQClick
 
+        GButton_265=tk.Button(root)
+        GButton_265["bg"] = "#f0f0f0"
+        ft = tkFont.Font(family='Times',size=10)
+        GButton_265["font"] = ft
+        GButton_265["fg"] = "#000000"
+        GButton_265["justify"] = "center"
+        GButton_265["text"] = "if-lighther YIQ"
+        GButton_265.place(x=660,y=300,width=115,height=34)
+        GButton_265["command"] = self.btnifLighterClick
+
+        GButton_265=tk.Button(root)
+        GButton_265["bg"] = "#f0f0f0"
+        ft = tkFont.Font(family='Times',size=10)
+        GButton_265["font"] = ft
+        GButton_265["fg"] = "#000000"
+        GButton_265["justify"] = "center"
+        GButton_265["text"] = "if-darker YIQ"
+        GButton_265.place(x=660,y=340,width=115,height=34)
+        GButton_265["command"] = self.btnIfDarkerClick
+
         photoA = ImageTk.PhotoImage(selectedImageA)
         photoB = ImageTk.PhotoImage(selectedImageB)
         
@@ -215,6 +235,38 @@ class App:
         imC[:,:,0] = np.abs(imA[:,:,0] - imB[:,:,0])
         imC[:,:,1] = (imA[:,:,0]*imA[:,:,1]+imB[:,:,0]*imB[:,:,1])/(imA[:,:,0]+imB[:,:,1])
         imC[:,:,2] = (imA[:,:,0]*imA[:,:,2]+imB[:,:,0]*imB[:,:,2])/(imA[:,:,0]+imB[:,:,1])
+        imglib.plot(imglib.convertToRGB(imC))
+
+    def btnifLighterClick(self):
+        imA = imglib.convertToYIQ(imglib.getNormRGB(imageA))
+        imB = imglib.convertToYIQ(imglib.getNormRGB(imageB))
+        imC = np.copy(imA)
+        for i in range(len(imA[:,:,0])):
+            for j in range(len(imA[:,:,0])):
+                if (imA[i,j,0] > imB[i,j,0]):
+                    imC[i,j,0] = imA[i,j,0]
+                    imC[i,j,1] = imA[i,j,1]
+                    imC[i,j,2] = imA[i,j,2]
+                else:
+                    imC[i,j,0] = imB[i,j,0]
+                    imC[i,j,1] = imB[i,j,1]
+                    imC[i,j,2] = imB[i,j,2]
+        imglib.plot(imglib.convertToRGB(imC))
+
+    def btnIfDarkerClick(self):
+        imA = imglib.convertToYIQ(imglib.getNormRGB(imageA))
+        imB = imglib.convertToYIQ(imglib.getNormRGB(imageB))
+        imC = np.copy(imA)
+        for i in range(len(imA[:,:,0])):
+            for j in range(len(imA[:,:,0])):
+                if (imA[i,j,0] < imB[i,j,0]):
+                    imC[i,j,0] = imA[i,j,0]
+                    imC[i,j,1] = imA[i,j,1]
+                    imC[i,j,2] = imA[i,j,2]
+                else:
+                    imC[i,j,0] = imB[i,j,0]
+                    imC[i,j,1] = imB[i,j,1]
+                    imC[i,j,2] = imB[i,j,2]
         imglib.plot(imglib.convertToRGB(imC))
 
 if __name__ == "__main__":

@@ -17,7 +17,7 @@ def convertToYIQ(image):
     y = (0.299*red + 0.587*green + 0.114*blue)
     i = (0.595716*red - 0.274453*green - 0.321263*blue)
     q = (0.211456*red - 0.522591*green + 0.311135*blue)
-    return np.dstack((y,i,q))
+    return np.dstack((y,i,q)).clip(0.,1.)
 
 def luminancia(a, yiq):
     yiq[:,:,0] = yiq[:,:,0]*a
@@ -40,7 +40,7 @@ def convertToRGB(yiq):
     blue = (y -0.2721*i -0.6474*q)
     green = (y -1.1070*i + 1.7046*q)
 
-    return np.dstack((red,blue,green))
+    return np.dstack((red,blue,green)).clip(0.,1.)
 
 def plot(img):
     plt.imshow(img)

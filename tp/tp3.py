@@ -7,6 +7,7 @@ import gallery.images as imgsources
 import library.imagelibrary as imglib
 from PIL import Image, ImageTk
 import numpy as np
+import matplotlib.pyplot as plt
 
 imageA = imgsources.sources[2]
 selectedImageA = Image.open(imageA)
@@ -63,12 +64,10 @@ def aplicarLinealTrozos():
                 
     return imFiltrado
 
-def aplicarLimite(x): 
-    if (x > 0.8):
-        return 1.
-    if (x < 0.2):
-        return 0.
-    return x
+def showHist(im):
+    data = im[:,:,0].flatten()
+    plt.hist(data)
+    plt.show()
 
 class App:
     def __init__(self, root):
@@ -106,21 +105,21 @@ class App:
                  anchor ="nw")
         displayImgA(intializeImage())
 
-
     def btnFiltrarImagen(self, event=None):
         content = self.combo.current()
         if (content == 0):
             im = aplicarRaiz()
             displayImgA(im)
+            showHist(im)
         if (content == 1):
             im = aplicarCuadrado()
             displayImgA(im)
+            showHist(im)
         if (content == 2):
             im = aplicarLinealTrozos()
             displayImgA(im)
+            showHist(im)
         return
-
-
 
 if __name__ == "__main__":
     root = tkinter.Tk()

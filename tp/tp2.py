@@ -217,7 +217,6 @@ class App:
         imC[:,:,2] = (imA[:,:,0]*imA[:,:,2]+imB[:,:,0]*imB[:,:,2])/(imA[:,:,0]+imB[:,:,1])
         displayImgB(imglib.convertToRGB(imC))
 
-
     def btnProdYIQClick(self):
         imA = imglib.convertToYIQ(imglib.getNormRGB(imageA))
         imB = imglib.convertToYIQ(imglib.getNormRGB(imageB))

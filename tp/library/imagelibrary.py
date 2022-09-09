@@ -14,10 +14,10 @@ def convertToYIQ(image):
     red = image[:,:,0]
     green = image[:,:,1]
     blue = image[:,:,2]
-    y = (0.299*red + 0.587*green + 0.114*blue)
-    i = (0.595716*red - 0.274453*green - 0.321263*blue)
-    q = (0.211456*red - 0.522591*green + 0.311135*blue)
-    return np.dstack((y,i,q)).clip(0.,1.)
+    y = np.array(0.299*red + 0.587*green + 0.114*blue).clip(0.,1.)
+    i = np.array(0.595716*red - 0.274453*green - 0.321263*blue).clip(-0.5957, 0.5957)
+    q = np.array(0.211456*red - 0.522591*green + 0.311135*blue).clip( -0.5226, 0.5226)
+    return np.dstack((y,i,q))
 
 def luminancia(a, yiq):
     yiq[:,:,0] = yiq[:,:,0]*a

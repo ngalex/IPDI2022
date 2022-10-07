@@ -1,12 +1,14 @@
 from multiprocessing.dummy import Array
 import sys 
 import numpy as np 
-import imageio.v2 as imageio
+import imageio
 import matplotlib.pyplot as plt
 
 def getNormRGB(path):
-    im = imageio.imread(path)
+    im = imageio.imread_v2(path)
+    print(im.shape,im.dtype)
     im = np.clip(im/255.,0.,1)
+    print(im.shape,im.dtype)
     return im
 
 # image: RGB normalizado 
